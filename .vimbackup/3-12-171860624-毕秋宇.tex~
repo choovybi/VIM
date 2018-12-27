@@ -1,0 +1,409 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% File: hw.tex 						   %
+% Description: LaTeX template for homework.                %
+%
+% Feel free to modify it (mainly the 'preamble' file).     %
+% Contact hfwei@nju.edu.cn (Hengfeng Wei) for suggestions. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IMPORTANT NOTE: Compile this file using 'XeLaTeX' (not 'PDFLaTeX') %
+%
+% If you are using TeXLive 2016 on windows,                          %
+% you may need to check the following post:                          %
+% https://tex.stackexchange.com/q/325278/23098                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt, a4paper, UTF8]{ctexart}
+\input{preamble}  % modify this file if necessary
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+%Tikz画图
+\usepackage{tikz}
+\usetikzlibrary{arrows,graphs} %指明是图库
+\lstset{
+    columns=fixed,       
+    numbers=left,                                        % 在左侧显示行号
+    numberstyle=\tiny\color{gray},                       % 设定行号格式
+    frame=none,                                          % 不显示背景边框
+    backgroundcolor=\color[RGB]{245,245,244},            % 设定背景颜色
+    keywordstyle=\color[RGB]{40,40,255},                 % 设定关键字颜色
+    numberstyle=\footnotesize\color{darkgray},           
+    commentstyle=\it\color[RGB]{0,96,96},                % 设置代码注释的格式
+    stringstyle=\rmfamily\slshape\color[RGB]{128,0,0},   % 设置字符串格式
+    showstringspaces=false,                              % 不显示字符串中的空格
+    language=c++,                                        % 设置语言
+}  
+\lstset{breaklines}
+
+%%%%%%%%%%%%%%%%%%%%
+\title{3-12：最大流算法}
+\me{毕秋宇}{171860624}
+\date{\today}     % you can specify a date like ``2017年9月30日''.
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism	% always keep this
+%%%%%%%%%%%%%%%%%%%%
+\beginthishw	% begin ``this homework (hw)'' part
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.1-1]	
+    Show that splitting an edge in a flow network yields an equivalent network. More
+	formally, suppose that flow network $G$ contains edge $(u,v)$, and we create a new
+	flow network $G'$ by creating a new vertex $x$ and replacing $(u,v)$ by new edges
+	$(u,x)$ and $(x,v)$ with $c(u,x)=c(x,v)=c(u,v)$ Show that a maximum flow
+	in $G'$ has the same value as a maximum flow in $G$.
+\end{problem}
+
+\begin{proof}
+    假设$G'$中的最大流和$G$中的最大流不相同，因为除$(u,v)$外的所有边都相同，所以$(u,v)$上的流与$(u,x)(x,v)$
+    上的流不相同。假设$G'$中的最大流小于$G$中的最大流，因为$c(u,x)=c(x,v)=c(u,v)$，所以，如果$f(u,x)=f(x,v)<f(u,x)<c(u,v)$，
+    则有$f(u,x)=f(x,v)=f(u,v)<c(u,v)$，作为$G'$中$u,v$之间新的流量，则原先的$f(u,x)=f(x,v)$不为最大流，矛盾。
+    若$G'$中的最大流大于$G$中的最大流，同理。综上，$G'$中的最大流与$G$中的最大流相同。
+\end{proof}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 26.1-2] 
+  % A problem here.
+    	Extend the flow properties and definitions to the multiple-source, multiple-sink
+	problem. Show that any flow in a multiple-source, multiple-sink flow network
+	corresponds to a flow of identical value in the single-source, single-sink network
+	obtained by adding a supersource and a supersink, and vice versa.
+\end{problem}
+
+\begin{proof}
+    设添加超级源结点和超级汇点前的图为$G$，添加后的为$G'$。假设原先$(u,v)$的流为$f(u,v)>f'(u,v)$。\\
+    (1).若$u,v$均不与$S$和$T$直接相连，则$c'(u,v)=c(u,v)$，而$f(u,v)>f'(u,v)$则可以使新的$f'(u,v)=f(u,v)<c'(u,v)$符合容量限制。新的$f'(u,v)$大于原本的$f'(u,v)$则原本的$f$不为最大流，矛盾。\\
+    (2).若$u$与$S$相连接，$v$不与$T$相连接，则$u$是图$G$中的源结点。由于$c(S,u)=\infty$且$c'(u,v)=c(u,v)$，而又有$f(u,v)>f'(u,v)$。
+    所以可使新的$f'(u,v)=f(u,v)<c'(u,v)$且$f'(S,u)=\sum_{i\in V}f(u,i)<\infty=c(S,u)$满足容量限制和流量守恒。新的$f'(u,v)$大于原本的$f'(u,v)$则原本的$f$不为最大流，矛盾。\\
+    (3).若$v$与$T$相连接，$u$不与$S$相连接，则$v$是图$G$中的汇结点。由于$c(v,T)=\infty$且$c'(u,v)=c(u,v)$，而又有$f(u,v)>f'(u,v)$。
+    所以可使新的$f'(u,v)=f(u,v)<c'(u,v)$且$f'(v,T)=\sum_{i\in V}f(i,v)<\infty=c(v,T)$满足容量限制和流量守恒。新的$f'(u,v)$大于原本的$f'(u,v)$则原本的$f$不为最大流，矛盾。\\
+    (4).若$u$与$S$相连接，$v$与$T$相连接，则$(u,v)$不属于图$G$\\
+    综上，增加超级源结点和超级汇结点后最大流与原图中的最大流等价。
+
+
+\end{proof}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 26.1-6]
+Professor Adam has two children who, unfortunately, dislike each other. The problem
+is so severe that not only do they refuse to walk to school together, but in fact
+each one refuses to walk on any block that the other child has stepped on that day.
+The children have no problem with their paths crossing at a corner. Fortunately
+both the professor’s house and the school are on corners, but beyond that he is not
+sure if it is going to be possible to send both of his children to the same school.
+The professor has a map of his town. Show how to formulate the problem of determining
+whether both his children can go to the same school as a maximum-flow
+problem.
+\end{problem}
+
+\begin{solution}
+    将每一个街道的容量$c$设为单位$1$，求解这个流网络的最大流$f$能否达到单位$2$，该问题则被转换成为最大流问题。
+\end{solution}
+
+  % 假设这是一道需要证明的题目。
+% \begin{remark}	
+%   Refer to book.
+% \end{remark}
+
+% \begin{proof}
+%   证明略。	
+% \end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.1-7]
+  % A problem here.
+    Suppose that, in addition to edge capacities, a flow network has vertex capacities.
+That is each vertex $v$ has a limit $l(v)$ on how much flow can pass though $v$. Show
+how to transform a flow network $G=(V,E)$ with vertex capacities into an equivalent
+flow network $G'=(V',E')$ without vertex capacities, such that a maximum
+flow in $G'$ has the same value as a maximum flow in G. How many vertices and
+edges does $G'$ have?
+\end{problem}
+
+\begin{solution}
+    将每一个有容量的结点$v$与一个新建的结点$v'$相连，边的容量$c(v,v')=c(v)$，则可将有结点容量的网络转换成为没有结点容量的流网络。
+    原图$G$中有边指向$v$的结点依然与$v$相连，被$v$指向的结点改为被$v'$指向，$v$指向$v'$。\\
+    图$G'$中有$2|V|$个结点和$|E|+|V|$条边。
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 26.2-2]
+  % A problem here.
+    In Figure 26.1(b), what is the flow across the cut $\{s,v_2,v_4\},\{v_1,v_3,t\}$? What is
+the capacity of this cut?
+\end{problem}
+
+\begin{solution}
+    根据引理26.4，横跨切割$(\{s,v_2,v_4\},\{v_1,v_3,t\})$的流是$|f|=19$，该切割的容量为$16+4+7+4=31$。
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.2-6]
+    Suppose that each source $s_i$ in a flow network with multiple sources and sinks
+produces exactly $p_i$ units of flow, so that $\sum_{v\in V}f(S_i,v)=p_i$. Suppose also
+that each sink $t_j$ consumes exactly $q_j$ units, so that $\sum_{v\in V}f(v,t_j)=q_j$, where $\sum_ip_i=\sum_jq_j$. Show how to convert the problem of finding a flow $f$ that obeys these additional constraints into the problem of finding a maximum flow in a singlesource,
+single-sink flow network.
+\end{problem}
+
+\begin{solution}
+  % Solution here.
+    构建一个超级源结点和一个超级汇结点，在新的图$G'$中，寻找$f=\sum_{i}p_i$的最大流，这样即把问题转换成为了在单源结点单汇点的流网络中寻找最大流的问题。
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.2-8]
+    Suppose that we redefine the residual network to disallow edges into s. Argue that
+the procedure FORD-FULKERSON still correctly computes a maximum flow.
+\end{problem}
+
+\begin{proof}
+    假设$\textsc{Ford-Fulkerson}$算法没有能够计算出正确的最大流，因为与能够计算出最大流的残存网络$G$相比较，新的残存网络$G'$中仅是缺少了指向$s$的边，
+    所以说明，$\exists v\in V, f(v,s)\neq 0$，且是由于$\exists f(v,s)\neq 0$导致的未能计算出最大流。而由于$v$不是源结点，所以一定存在从$s-v-s$的回路，
+    回路上的流减少$f(v,s)$后仍然能够维持流量守恒的约束，则新的流$f'=f+f(v,s)-f(v,s)=f$仍然为最大流。此时$\forall v\in V,f(v,s)=0$，所以可将指向$s$的边删去，
+    即$\textsc{Ford-Fulkerson}$仍然能够计算出最大流。
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.2-10]
+  % A problem here.
+Show how to find a maximum flow in a network $G=(V,E)$ by a sequence of at
+most $|E|$ augmenting paths. (Hint: Determine the paths after finding the maximum
+flow.)
+\end{problem}
+
+\begin{solution}
+    首先找到最大流，此时我们可以得到流网络的最小割。而每次通过增广路径求增量时都会在最小割中让$\exists (u,v),f(u,v)=c(u,v)$，
+    所以，上界即为$|E|$。
+
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.2-12]
+  % A problem here.
+    Suppose that you are given a flow network $G$, and $G$ has edges entering the
+source s. Let $f$ be a flow in $G$ in which one of the edges $(v,s)$ entering the source
+has $f(v,s)=1$. Prove that there must exist another flow $f'$ with $f'(v,s)=0$
+such that $|f|=|f'|$. Give an $O(E)$-time algorithm to compute $f'$, given f , and
+assuming that all edge capacities are integers.
+\end{problem}
+
+\begin{solution}
+  % Solution here.
+    由于$f(v,s)=1$，所以$v$在网络$G$中的流$f$的路径上，使用BFS找到流$f$中从源结点$s$到点$v$的路径，由于每条边最多只会遍历一次，所以时间复杂度为$|E|$。
+    找到这样一条路径之后与$(v,s)$构成了一个回路，在回路上所有的$f$均减一，则$|f'|=|f|+1-1=|f|$仍然为最大流，而此时$f'(v,s)=1-1=0$。
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.2-13]
+  % A problem here.
+    Suppose that you wish to find, among all minimum cuts in a flow network $G$ with
+integral capacities, one that contains the smallest number of edges. Show how to
+modify the capacities of G to create a new flow network $G'$ in which any minimum
+cut in $G'$ is a minimum cut with the smallest number of edges in G.
+\end{problem}
+
+\begin{solution}
+    将每一条边的容量$c$更改为$c+\frac{1}{1+|E|}$，这样由于一个最小割所含有的边数最多不超过$|E|$，所以新的最小割的总容量$c$最多增加$\frac{|E|}{1+|E|}$，
+    由于所有容量都是整数值，所以如果在原图$G$中不为最小割，那么在容量更改过后的新图$G'$中也不为最小割。而在新图$G'$中得到的最小割即为$G$中包含边的条数最少的最小切割。
+    因为如果含有$m$条边的切割不为边数最少的最小切割，那么一定有边数为$n$的比该最小切割还少的最小切割，而在新的图$G'$中，含$m$条边的切割的容量大于含$n$条边的，所以含$m$条边的不是新图$G'$的最小切割。
+    所以$G'$中任意一个最小切割是$G$中包含边的条数最少的最小切割。
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26.3-3]
+  % A problem here.
+Let $G=(V,E)$ be a bipartite graph with vertex partition $V=L\cup R$, and let $G'$
+be its corresponding flow network. Give a good upper bound on the length of any
+augmenting path found in $G'$ during the execution of FORD-FULKERSON.
+\end{problem}
+
+\begin{solution}
+  % Solution here.
+    任意增广路径的长度的上界为$2+min(|L|,|R|)+min(|L|,||R)-1=2\times min(|L|,|R|)+1$，假设$L$中的点为$l_1,l_2,\cdots,l_{|L|}$，$R$中的点为$r_1,r_2,\cdots,r_{|R|}$。
+    那么增广路径最长为$s-l_1-r_1-l_2-\cdots-r_{min(|L|,|R|)}-t$，其中$r_i-l_{i+1}$的为残存网络中的反向边。所以对于$G'$中的任意增广路径的上界为$2\times min(|L|,|R|)+1$。
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26-1]
+  % A problem here.
+    An $n\times n$ grid is an undirected graph consisting of n rows and n columns of vertices,
+as shown in Figure 26.11. We denote the vertex in the i th row and the j th column
+by $(i,j)$. All vertices in a grid have exactly four neighbors, except for the boundary
+vertices, which are the points $(i,j)$ for which $i=1,i=n,j=1$, or $j=n$.\\
+Given $m\leq n^2$ starting points $(x_1,y_1),(x_2,y_2),...,(x_m,y_m)$ in the grid, the
+escape problem is to determine whether or not there are m vertex-disjoint paths
+from the starting points to any$m$ different points on the boundary. For example,
+the grid in Figure 26.11(a) has an escape, but the grid in Figure 26.11(b) does not.\\
+a.\\
+Consider a flow network in which vertices, as well as edges, have capacities.
+That is, the total positive flow entering any given vertex is subject to a capacity
+constraint. Show that determining the maximum flow in a network with edge
+and vertex capacities can be reduced to an ordinary maximum-flow problem on
+a flow network of comparable size.\\
+b.\\
+Describe an efficient algorithm to solve the escape problem, and analyze its
+running time.
+\end{problem}
+
+\begin{solution}
+    (a). 证明如26.1-7所示，将每一个有容量的结点$v$与一个新建的结点$v'$相连，边的容量$c(v,v')=c(v)$，则可将有结点容量的网络转换成为没有结点容量的流网络。
+    原图$G$中有边指向$v$的结点依然与$v$相连，被$v$指向的结点改为被$v'$指向，$v$指向$v'$。\\
+    图$G'$中有$2|V|$个结点和$|E|+|V|$条边。\\
+    (b). 将逃逸问题中的起始结点设为最大流问题中的源结点$s$，将边界结点设为汇点$t$，在网格中相邻的结点则在最大流问题中有边连接。将每个结点（包括源结点）的结点容量设置为单位1，边的容量亦为单位1。
+    解决逃逸问题即转化为了解决构造出的图$G$中的最大流能否到达$|S|$的问题，如果最大流$f<|S|$，那么逃逸问题无解，如果最大流能够到达$|S|$那么最大流路径即为逃逸路径。算法的运行时间与$\textsc{Edmonds-Karp}$算法相同为$O(VE^{2})$。
+
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 26-2]
+  % A problem here.
+    A path cover of a directed graph $G=(V,E)$ is a set P of vertex-disjoint paths
+such that every vertex in V is included in exactly one path in P. Paths may start
+and end anywhere, and they may be of any length, including 0. A minimum path
+cover of G is a path cover containing the fewest possible paths.\\
+a. \\
+Give an efficient algorithm to find a minimum path cover of a directed acyclic
+graph $G=(V,E)$. (Hint: Assuming that $V=\{1,2,...,n\}$, construct the
+graph $G'=(V',E')$, where\\
+$V'=\{x_0,x_1,...,x_n\}\cup \{y_0,y_1,...,y_n\}$,\\
+$E'=\{(x_0,x_i):i\in V\}\cup\{(y_i,y_0):i\in V\}\cup\{(x_i,y_i):(i,j)\in E\}$,\\
+and run a maximum-flow algorithm.)\\
+b.\\
+Does your algorithm work for directed graphs that contain cycles? Explain.
+\end{problem}
+
+\begin{solution}
+    (a). 如提示中构造图$G'$，将边的容量设置为1，再运行$x_0$到$y_0$的最大流算法。如果在最大流中$f(x_i,y_j)=1$，那么将$(i,j)$加入到路径覆盖中。
+    这样得到的就是最小路径覆盖。首先没有重复的点出现在路径覆盖中，因为如果出现重复的点那么有$f(x_i,y_j)=f(x_k,y_j)$且$i\neq j\neq k$违背了容量限制。
+    同样也不会有$f(x_i,y_j)=f(x_i,y_k)=1$的情况。其次图$G$中的每一条路径都会被覆盖，因为如果图$G$中的边$(i,j)$不在路径覆盖中那么，$f(x_i,y_j)=0$而此时有$x_0-x_i-y_j-y_0$的路径使得最大流$f$能够增加1，所以最大流算法得到的不是最大流，矛盾。\\
+    (b). 不适用于带回路的有向图，因为这样的话会有从$y_j$指向$x_i$的边不在最大流中。假设有${1,2,3,4}$四个点，其中边有$(1,2)(2,3)(3,1)(4,2)$那么期望的最小路径覆盖是$4-2-3-1$，而通过该方法得到的最大流的路径为$(x_1,y_2),(x_2,y_3),(x_3,y_1)$，未能够覆盖点$4$。
+
+
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 22.5-7]
+%   % A problem here.
+% \end{problem}
+%
+% \begin{solution}
+%
+% \end{solution}
+
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\begincorrection	% begin the ``correction'' part (Optional)
+
+% %%%%%%%%%%
+% \begin{problem}[题号]
+%   题目。
+% \end{problem}
+
+% \begin{cause}
+%   简述错误原因（可选）。
+% \end{cause}
+
+% % Or use the ``solution'' environment
+% \begin{revision}
+%   正确解答。
+% \end{revision}
+% %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\beginfb	% begin the feedback section (Optional)
+
+% 你可以写：
+% \begin{itemize}
+%   \item 对课程及教师的建议与意见
+%   \item 教材中不理解的内容
+%   \item 希望深入了解的内容
+%   \item 等
+% \end{itemize}
+% %%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+% 可使用如下命令插入图片：
+% \begin{figure}[!H]
+% \centering
+% \includegraphics[scale=0.6]{1.png}
+% % \caption{this is a figure demo}
+% \label{fig:label}
+% \end{figure}
+
+% 插入数学公式：
+% \begin{verbatim}
+%   $E = mc^2$
+% \end{verbatim}
+% 得到 $E = mc^2$。
+% \begin{verbatim}
+%   \[
+%     E = mc^2
+%   \]
+% \end{verbatim}
+% 得到
+% \[
+%   E = mc^2
+% \]
+
+% The ``remark'' environments (when needed) must be 
+% put before the ``solution''/``revision''/``proof'' environments.
+% \begin{remark}	% Optional
+%   以下解答参考了书籍/网站/讲义 $\ldots$。
+
+%   \noindent 以下解答是与 XXX 同学讨论得到的。
+% \end{remark}
+
+% \newpage  % continue in a new page
+% 可使用如下代码插入伪代码
+% \begin{algorithm}
+% \caption{DFS(G)}
+% \label{alg1}
+% \begin{algorithmic}
+%     \STATE $time \gets time + 1$
+%     \STATE $u.d\gets time$
+%     \STATE $u.color \gets GRAY$
+%     \STATE $push(u)$
+%     \WHILE{$!empty(stack)$}
+%     \STATE $u \gets top()$
+%     \STATE $leaf \gets true$
+%     \FOR{ each $v\in Adj[u]$ }
+%     \IF{$v.color \gets WHITE$}
+%     \STATE $v.color \gets GRAY$
+%     \STATE $v.\pi \gets u$
+%     \STATE $time \gets time + 1$
+%     \STATE $v.d \gets time$
+%     \STATE $push(v)$
+%     \STATE $leaf \gets false$
+%     \STATE $break$
+%     \ENDIF
+%     \ENDFOR
+%     \IF{$leaf == true$}
+%     \STATE $u.color \gets BLACK$
+%     \STATE $time \gets time + 1$
+%     \STATE $u.f \gets time$
+%     \STATE $pop(u)$
+%     \ENDIF
+%     \ENDWHILE
+% \end{algorithmic}
+% \end{algorithm}
+

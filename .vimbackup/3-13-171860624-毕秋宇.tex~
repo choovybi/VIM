@@ -1,0 +1,400 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% File: hw.tex 						   %
+% Description: LaTeX template for homework.                %
+%
+% Feel free to modify it (mainly the 'preamble' file).     %
+% Contact hfwei@nju.edu.cn (Hengfeng Wei) for suggestions. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IMPORTANT NOTE: Compile this file using 'XeLaTeX' (not 'PDFLaTeX') %
+%
+% If you are using TeXLive 2016 on windows,                          %
+% you may need to check the following post:                          %
+% https://tex.stackexchange.com/q/325278/23098                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt, a4paper, UTF8]{ctexart}
+\input{preamble}  % modify this file if necessary
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumerate}
+%Tikz画图
+\usepackage{tikz}
+\usetikzlibrary{arrows,graphs} %指明是图库
+\lstset{
+    columns=fixed,       
+    numbers=left,                                        % 在左侧显示行号
+    numberstyle=\tiny\color{gray},                       % 设定行号格式
+    frame=none,                                          % 不显示背景边框
+    backgroundcolor=\color[RGB]{245,245,244},            % 设定背景颜色
+    keywordstyle=\color[RGB]{40,40,255},                 % 设定关键字颜色
+    numberstyle=\footnotesize\color{darkgray},           
+    commentstyle=\it\color[RGB]{0,96,96},                % 设置代码注释的格式
+    stringstyle=\rmfamily\slshape\color[RGB]{128,0,0},   % 设置字符串格式
+    showstringspaces=false,                              % 不显示字符串中的空格
+    language=c++,                                        % 设置语言
+}  
+\lstset{breaklines}
+%%%%%%%%%%%%%%%%%%%%
+\title{3-13：平面图与图着色}
+\me{毕秋宇}{171860624}
+\date{\today}     % you can specify a date like ``2017年9月30日''.
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism	% always keep this
+%%%%%%%%%%%%%%%%%%%%
+\beginthishw	% begin ``this homework (hw)'' part
+
+%%%%%%%%%%
+\begin{problem}[CZ: 9.3]	
+	\begin{enumerate}[(a)]
+		\item  The vertices of a certain graph $G$ have degrees 3, 4, 4, 4, 5, 6, 6. 
+		Prove that $G$ is nonplanar.
+		\item  The vertices of a certain graph $G$ have degrees 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7. 
+		Prove that $G$ is nonplanar.
+	\end{enumerate}
+\end{problem}
+
+\begin{proof}
+	\begin{enumerate}[(a)]
+		\item  $\because 2m = 3+4+4+4+5+6+6 = 32$\\
+        $\therefore m=16>3n-6= 21-6 = 15$\\
+            据定理9.2的逆否命题，$G$不是平面图。
+		\item  $\because 2m = 4*3+5*3+6*3+7*3=66$\\
+        $\therefore m=33>3n-6=30$\\
+            据定理9.2的逆否命题，$G$不是平面图。
+	\end{enumerate}
+
+\end{proof}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[CZ: 9.5] 
+  % A problem here.
+	Show that there exists
+	\begin{enumerate}[(a)]
+		\item  a 4-regular planar graph and a 4-regular nonplanar graph.
+		\item  a 5-regular planar graph and a 5-regular nonplanar graph.
+		\item  no r-regular planar graph for $r \ge 6$.
+	\end{enumerate}
+\end{problem}
+
+\begin{solution}
+	\begin{enumerate}[(a)]
+		\item 4正则图如下所示：
+平面图\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{1.png}
+\end{figure}
+非平面图\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{2.png}
+\end{figure}
+		\item 5正则图如下所示：
+将结点7,8,9连向结点12的边换成曲线即为平面图\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{3.png}
+\end{figure}
+非平面图\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{4.png}
+\end{figure}
+		\item  根据推论9.3可知$r\geq 6$时$r$正则图不为平面图。
+	\end{enumerate}
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[CZ: 9.7]
+	Give an example of each of the following or explain why no such example exists.
+	\begin{enumerate}[(a)]
+		\item a planar graph of order 4.
+		\item a nonplanar graph of order 4.
+		\item a nonplanar graph of order 6 that contains neither $K_5$ nor $K_{3, 3}$ as a subgraph.
+		\item a plane graph having 5 vertices, 10 edges and 7 regions.
+		\item a planar graph of order $n \ge 3$ and size m with $m = 3n − 6$.
+		\item a nonplanar graph of order $n \ge 3$ and size m with $m = 3n − 6$.
+	\end{enumerate}
+\end{problem}
+
+\begin{solution}
+	\begin{enumerate}[(a)]
+		\item  四阶的平面图如下所示：
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{5.png}
+\end{figure}
+        \item  不存在四阶的非平面图，因为四阶的图不可能包好$K_5$和$K_{3,3}$或者他们的细分，所以根据$Kuratowski$定理，
+            可知这样的图$G$是平面的。
+        \item  阶为6且不以$K_5$和$K_{3,3}$作为子图的非平面图如下所示：
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{6.png}
+\end{figure}
+		\item  不存在这样的平面图，因为5个顶点10条边，所以图$G$是一个5阶完全图即$K_5$，所以不存在这样的平面图。
+		\item  阶$n\geq 3$，边数为$3$，且满足等式$3=3\times 3-6$的平面图如下所示：
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{7.png}
+\end{figure}
+		\item  阶$n\geq 3$，边数为$12$，且满足等式$12=6\times 3-6$的非平面图如下所示：
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{8.png}
+\end{figure}
+	\end{enumerate}
+\end{solution}
+
+  % 假设这是一道需要证明的题目。
+% \begin{remark}	
+%   Refer to book.
+% \end{remark}
+
+% \begin{proof}
+%   证明略。	
+% \end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[CZ: 9.8]
+  % A problem here.
+	Determine, with explanation, whether the graph $K_4 \times K_2$ is planar.
+\end{problem}
+
+\begin{solution}
+    $K_4\times K_{2}$不是平面图，因为$K_4\times K_2$含有$K_5$的细分作为子图。
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[CZ: 10.2]
+  % A problem here.
+	Determine the chromatic number of each of the following:
+	 \begin{enumerate}[(a)]
+	 	\item  the Petersen graph,
+	 	\item  the n-cube $Q_n$, 
+	 	\item  the wheel $W_n = C_n + K_1$.
+	 \end{enumerate}
+\end{problem}
+
+\begin{solution}
+	 \begin{enumerate}[(a)]
+	 	\item  Petersen图的色数是3；
+	 	\item  n立方体如的色数是2；
+	 	\item  n为奇数的话，色数为4；n为偶数的话，色数为3；
+	 \end{enumerate}
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[CZ: 10.3]
+	What is the chromatic number of a tree?
+\end{problem}
+
+\begin{solution}
+  % Solution here.
+    树的色数是2，按照深度颜色交替即可。
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[CZ: 10.4]
+	 Prove or disprove:
+	 \begin{enumerate}[(a)]
+	 	\item If a planar graph contains a triangle, then its chromatic number is 3.
+	 	\item If there is a 4-coloring of a graph $G$, then $\chi(G) = 4$.
+	 	\item If it can be shown that there is no a 3-coloring of a graph $G$, then $\chi(G) = 4$.
+	 	\item If $G$ is a graph with $\chi(G) \le 4$, then $G$ is planar.
+	 \end{enumerate}
+\end{problem}
+
+\begin{proof}
+	 \begin{enumerate}[(a)]
+	 	\item  错误，n为奇数的轮图含有三角形，但是色数为4；
+        \item  错误，Petersen图可以用四种颜色颜色，但是$\chi(G)=3$；
+        \item  错误，5完全图$K_5$没有3染色，但是$\chi(K_5)=5\neq 4$；
+	 	\item  错误，Petersen图的色数是$3<4$，但是Petersen图不是平面图。
+	 \end{enumerate}
+
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[CZ: 10.5]
+  % A problem here.
+	Prove that every graph of order 6 with chromatic number 3 has at most 12 edges.
+\end{problem}
+
+\begin{proof}
+    假设拥有大于12条边，那么该图由$K_6$减去1或2条边可获得，因此图$G$存在$K_4$作为子图。
+    因为$\chi(K_4)=4>3$，所以$\chi(G)\geq \chi(K_4) > 3$，矛盾。所以该结论成立。
+
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26.2-12]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+%   % Solution here.
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26.2-13]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26.3-3]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+%   % Solution here.
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26-1]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+% 
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26-2]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+% 
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 22.5-7]
+%   % A problem here.
+% \end{problem}
+%
+% \begin{solution}
+%
+% \end{solution}
+
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\begincorrection	% begin the ``correction'' part (Optional)
+
+% %%%%%%%%%%
+% \begin{problem}[题号]
+%   题目。
+% \end{problem}
+
+% \begin{cause}
+%   简述错误原因（可选）。
+% \end{cause}
+
+% % Or use the ``solution'' environment
+% \begin{revision}
+%   正确解答。
+% \end{revision}
+% %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\beginfb	% begin the feedback section (Optional)
+
+% 你可以写：
+% \begin{itemize}
+%   \item 对课程及教师的建议与意见
+%   \item 教材中不理解的内容
+%   \item 希望深入了解的内容
+%   \item 等
+% \end{itemize}
+% %%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+% 可使用如下命令插入图片：
+% \begin{figure}[!H]
+% \centering
+% \includegraphics[scale=0.6]{1.png}
+% % \caption{this is a figure demo}
+% \label{fig:label}
+% \end{figure}
+
+% 插入数学公式：
+% \begin{verbatim}
+%   $E = mc^2$
+% \end{verbatim}
+% 得到 $E = mc^2$。
+% \begin{verbatim}
+%   \[
+%     E = mc^2
+%   \]
+% \end{verbatim}
+% 得到
+% \[
+%   E = mc^2
+% \]
+
+% The ``remark'' environments (when needed) must be 
+% put before the ``solution''/``revision''/``proof'' environments.
+% \begin{remark}	% Optional
+%   以下解答参考了书籍/网站/讲义 $\ldots$。
+
+%   \noindent 以下解答是与 XXX 同学讨论得到的。
+% \end{remark}
+
+% \newpage  % continue in a new page
+% 可使用如下代码插入伪代码
+% \begin{algorithm}
+% \caption{DFS(G)}
+% \label{alg1}
+% \begin{algorithmic}
+%     \STATE $time \gets time + 1$
+%     \STATE $u.d\gets time$
+%     \STATE $u.color \gets GRAY$
+%     \STATE $push(u)$
+%     \WHILE{$!empty(stack)$}
+%     \STATE $u \gets top()$
+%     \STATE $leaf \gets true$
+%     \FOR{ each $v\in Adj[u]$ }
+%     \IF{$v.color \gets WHITE$}
+%     \STATE $v.color \gets GRAY$
+%     \STATE $v.\pi \gets u$
+%     \STATE $time \gets time + 1$
+%     \STATE $v.d \gets time$
+%     \STATE $push(v)$
+%     \STATE $leaf \gets false$
+%     \STATE $break$
+%     \ENDIF
+%     \ENDFOR
+%     \IF{$leaf == true$}
+%     \STATE $u.color \gets BLACK$
+%     \STATE $time \gets time + 1$
+%     \STATE $u.f \gets time$
+%     \STATE $pop(u)$
+%     \ENDIF
+%     \ENDWHILE
+% \end{algorithmic}
+% \end{algorithm}
+

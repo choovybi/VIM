@@ -1,0 +1,115 @@
+\documentclass[12pt]{ctexart}
+\usepackage[english]{babel}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfigure}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{booktabs}
+\usepackage{indentfirst}
+\setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+\setlength{\parindent}{2em}
+
+\title{Thesis Title}								% Title
+\author{\emph{Bi qiuyu}}								% Author
+\date{\today}											% Date
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\centering
+    \vspace*{0.5 cm}
+    \includegraphics[scale = 0.2]{NJU.jpg}\\[1.0 cm]	% University Logo
+    \textsc{\LARGE Nanjing University}\\[2.0 cm]	% University Name
+    \textsc{\large Course Code}\\[0.5 cm]				% Course Code
+	\textsc{\large Course Name}\\[0.5 cm]				% Course Name
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+    {\huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft} \large
+			\emph{Author:}\\
+			\theauthor
+			\end{flushleft}
+			\end{minipage}
+			\begin{minipage}{0.4\textwidth}
+			\begin{flushright} \large
+                \emph{Student Number:} \\
+			171860624\\									% Your Student Number
+                \emph{Department:} \\
+                \emph{Computer Science}
+		\end{flushright}
+	\end{minipage}\\[2 cm]
+	
+	{\large \thedate}\\[2 cm]
+ 
+	\vfill
+	
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Abstract}
+\indent $\textbf{Keywords}$：
+\section{Introduction}
+\cite{li2004fourier}
+\newpage
+
+\bibliographystyle{plain}
+\bibliography{biblist}
+
+\end{document}
+
+% \begin{center}
+% \begin{tabular}{|c|c|}
+% \toprule
+% Symbol & Meaning\\
+% \midrule
+% $\xi{0}$ & Space in a high temperature environment\\
+% \midrule
+% $\xi{1}$ & Space formed by the first layer of protective clothing\\
+% \midrule
+% $\xi{2}$ & Space formed by the second layer of protective clothing\\
+% \midrule
+% $\xi{3}$ & Space formed by the third layer of protective clothing\\
+% \midrule
+% $\xi{4}$ & Space formed by the fourth layer of protective clothing\\
+% \midrule
+% $\xi{5}$ & Space inside the dummy\\
+% \bottomrule
+% \end{tabular}
+% \end{center}
+
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.8\textwidth]{2.png}
+% \caption{System $S$}
+% \label{Fig 1}
+% \end{figure}
+

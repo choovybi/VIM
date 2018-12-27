@@ -1,0 +1,42 @@
+# 论文信息和设置
+# 修改后运行run.py更新。需要关闭LyX文档再打开以生效。
+
+# 目录设置
+directory: ./example/ # 论文所在工作目录 
+                      # 需要有abstract-en.lyx (英文摘要)和abstract-cn.lyx (中文摘要)
+
+# 排版设置
+font-song: SimSun     # 宋体(正文)字体
+font-hei: SimHei      # 黑体(粗体)字体
+font-kai: KaiTi       # 楷体(斜体)字体
+add-to-preamble: |    # LaTeX导言区加入定制内容
+    % \setmainfont{Palatino} % Roman
+    % \setsansfont{Arial} % Sans Serif 
+    \usepackage{tikz}
+    \usepackage{pgfplots}
+
+# 论文信息
+# degree-cn: 博士
+# degree-en: Doctor of Philosophy
+title-cn: 人工智能的前世今生与未来
+# title-en: English Title (Can be Very Very Very Very Very Very Very Very Very Very Very Very Long)
+author-cn: 毕秋宇
+# author-en: Name
+# supervisor-cn: 导师
+# supervisor-en: Supervisor
+date-cn: 2018年12月19日
+# date-en: June 1, 2000
+
+# 其他信息
+xuehao: 171860624 # 学号
+grade: 2017 # 入学年级
+# defense-date: 2000年1月1日  # 答辩日期
+subject-cn: 计算机科学与技术 # 专业名称
+# subject-en: ????
+# direction-cn: 研究方向 # 研究方向
+# wheresubmit-en: the graduate school of Nanjing University # submitted to ...
+# department-en: Department of Computer Science and Technology # 院系
+
+# 中文/英文关键字
+keywords-cn: 关键词1；关键词2
+# keywords-en: Some Thing, Another Thing

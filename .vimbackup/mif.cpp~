@@ -1,0 +1,22 @@
+#include<iostream>
+#include<string>
+using namespace std;
+int main(void) {
+	string s;
+	int i=0;
+	cout<<"DEPTH"<<"\t"<<" = "<<1024<<";"<<endl;
+	cout<<"WIDTH"<<"\t"<<" = "<<32<<";"<<endl;
+	cout<<"ADDRESS_RADIX\t = HEX;"<<endl;
+	cout<<"DATA_RADIX\t = HEX;"<<endl;
+    cout<<endl;
+
+	cout<<"CONTENT"<<endl;
+	cout<<"BEGIN"<<endl;
+	while(cin>>s) {
+		cout<<hex<<i<<":"<<s<<";"<<endl;
+		i++;
+	}
+
+	cout<<"END;"<<endl;
+
+}

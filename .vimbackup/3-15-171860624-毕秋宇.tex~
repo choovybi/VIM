@@ -1,0 +1,436 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% File: hw.tex 						   %
+% Description: LaTeX template for homework.                %
+%
+% Feel free to modify it (mainly the 'preamble' file).     %
+% Contact hfwei@nju.edu.cn (Hengfeng Wei) for suggestions. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IMPORTANT NOTE: Compile this file using 'XeLaTeX' (not 'PDFLaTeX') %
+%
+% If you are using TeXLive 2016 on windows,                          %
+% you may need to check the following post:                          %
+% https://tex.stackexchange.com/q/325278/23098                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt, a4paper, UTF8]{ctexart}
+\input{preamble}  % modify this file if necessary
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumerate}
+%Tikz画图
+\usepackage{tikz}
+\usetikzlibrary{arrows,graphs} %指明是图库
+\lstset{
+    columns=fixed,       
+    numbers=left,                                        % 在左侧显示行号
+    numberstyle=\tiny\color{gray},                       % 设定行号格式
+    frame=none,                                          % 不显示背景边框
+    backgroundcolor=\color[RGB]{245,245,244},            % 设定背景颜色
+    keywordstyle=\color[RGB]{40,40,255},                 % 设定关键字颜色
+    numberstyle=\footnotesize\color{darkgray},           
+    commentstyle=\it\color[RGB]{0,96,96},                % 设置代码注释的格式
+    stringstyle=\rmfamily\slshape\color[RGB]{128,0,0},   % 设置字符串格式
+    showstringspaces=false,                              % 不显示字符串中的空格
+    language=c++,                                        % 设置语言
+}  
+\lstset{breaklines}
+%%%%%%%%%%%%%%%%%%%%
+\title{3-15：线性规划}
+\me{毕秋宇}{171860624}
+\date{\today}     % you can specify a date like ``2017年9月30日''.
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism	% always keep this
+%%%%%%%%%%%%%%%%%%%%
+\beginthishw	% begin ``this homework (hw)'' part
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.1-4]	
+Convert the following linear program into standard form:\\
+minimize:$$2x_1+7x_2+x3$$\\
+subject~to:\\
+	$$x_1-x_3=7$$
+	$$3x_1+x_2\geq 24$$
+	$$x_2\geq 0$$
+	$$x_3\leq 0$$
+\end{problem}
+
+\begin{solution}
+standard form:\\
+maximize:$$-2x_1-7x_2-x3+2x_4$$\\
+subject~to:\\
+	$$-x_1 + 0x_2 - x_3 + x_4 \leq -7$$
+	$$x_1 + 0x_2 + x_3 - x_4 \leq 7$$
+	$$-3x_1 - x_2 + 0x_3 + 3x_4 \leq -24$$
+	$$x_1, x_2, x_3, x_4 \geq 0$$
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 29.1-5]
+  % A problem here.
+Convert the following linear program into slack form:\\
+maximize:$$2x_1-6x_3$$\\
+subject~to:\\
+$$x_1+x_2-x_3\leq7$$
+$$3x_1-x_2\geq 8$$
+$$-x_1+2x_2+2x_3\geq 0$$
+$$x_1,x_2,x_3\geq 0$$
+\end{problem}
+
+\begin{solution}
+standard form:\\
+maximize:$$2x_1-6x_3$$\\
+subject~to:\\
+$$x_1+x_2-x_3\leq7$$
+$$-3x_1+x_2+0x_3\leq 8$$
+$$x_1-2x_2-2x_3\leq 0$$
+$$x_1,x_2,x_3\geq 0$$
+slack form:\\
+maximize:$$2x_1-6x_3$$\\
+subject~to:\\
+$$x_4 = 7 - x_1 - x_2 + x_3$$
+$$x_5 = 8 + 3x_1 - x_2 - 0x_3$$
+$$x_6 = -x_1 + 2x_2 + 2x_3$$
+$$x_1, x_2, x_3, x_4, x_5, x_6\geq 0$$
+
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 29.1-6]
+Show that the following linear program is infeasible:\\
+maximize:$$3x_1-2x_2$$\\
+subject~to:\\
+$$x_1+x_2\leq2$$
+$$-2x_1-2x_2\leq -10$$
+$$x_1,x_2\geq 0$$
+\end{problem}
+
+\begin{proof}
+$$x_1+x_2\leq2$$
+与
+$$x_1+x_2\geq 5$$
+矛盾，所以不可解
+\end{proof}
+
+  % 假设这是一道需要证明的题目。
+% \begin{remark}	
+%   Refer to book.
+% \end{remark}
+
+% \begin{proof}
+%   证明略。	
+% \end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.1-7]
+  % A problem here.
+Show that the following linear program is unbounded:\\
+maximize:$$x_1-x_2$$\\
+subject~to:\\
+$$-x_1+x_2\leq-1$$
+$$-x_1-2x_2\leq -2$$
+$$x_1,x_2\geq 0$$
+\end{problem}
+
+\begin{proof}
+$$x_1-x_2\geq 1$$
+$$x_1-2x_2\geq 1$$
+而目标是要求$x_1-x_2$的最大值，所以无界。
+\end{proof}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 29.1-9]
+  % A problem here.
+Give an example of a linear program for which the feasible region is not bounded,
+but the optimal objective value is finite.
+\end{problem}
+
+\begin{solution}
+maximize:$$-x_1-x_2$$\\
+subject~to:\\
+$$x_1 \leq 1$$
+$$x_1,x_2\geq 0$$
+feasible region is not bounded, but the optimal objective value is finite.
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.2-2]
+Write out explicitly the linear program corresponding to finding the shortest path
+from node $s$ to node $y$ in Figure 24.2(a).
+\end{problem}
+
+\begin{solution}
+  % Solution here.
+maximize\\
+$$d_y$$
+subject~to:\\
+$$d_t \leq d_s + 3$$
+$$d_y \leq d_s + 5$$
+$$d_y \leq d_t + 2$$
+$$d_t \leq d_y + 1$$
+$$d_x \leq d_t + 6$$
+$$d_x \leq d_y + 4$$
+$$d_z \leq d_y + 6$$
+$$d_s \leq d_z + 3$$
+$$d_z \leq d_x + 2$$
+$$d_x \leq d_z + 7$$
+$$d_s = 0$$
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.2-3]
+In the single-source shortest-paths problem, we want to find the shortest-path
+weights from a source vertex $s$ to all vertices $\nu \in V$.Given a graph $G$, write a linear program for which the solution has the property that $d_{\nu}$ is the shortest-path
+weight from s to $\nu$ for each vertex $\nu \in V$
+\end{problem}
+
+\begin{solution}
+maximize\\
+$$\sum d_v$$
+subject~to:\\
+    $$d_v \leq d_u + w_{uv}\ for\ (u,v)\in V$$
+    $$d_s = 0$$
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.2-6]
+  % A problem here.
+Write a linear program that, given a bipartite graph $G=(V,E)$, solves the maximum-bipartite-matching problem.
+\end{problem}
+
+\begin{solution}
+假设二部图为$V_1$和$V_2$两部分\\
+maximize\\
+$$d_t$$
+subject~to\\
+    $$d_{v_1}\leq d_s + 1\ for\ v_1 \in V_1$$
+    $$d_{v_2}\leq d_{v_1} + 1\ for\ (v_1, v_2)\in E$$
+    $$d_t\leq d_{v_1} + 1\ for\ v_2 \in V_2$$
+    $$d_s = 0$$
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.3-2]
+  % A problem here.
+Show that the call to PIVOT in line 12 of SIMPLEX never decreases the value of $\nu$
+\end{problem}
+
+\begin{proof}
+    $$\hat{v}-v = c_{e}\hat{b_{e}}$$
+    假设处理的变量为$x_e$他的系数为$c_e \geq 0$\\
+    而常数$b_e$非负\\
+    $$\therefore\ c_{e}\hat{b_{e}}\geq c_{e}\times 0\geq 0$$
+    所以不可能减小$v$的值
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.3-3]
+  % A problem here.
+Prove that the slack form given to the PIVOT procedure and the slack form that the
+procedure returns are equivalent.
+\end{problem}
+
+\begin{proof}
+    The translation in the PIVOT procedure as we can see does just two things, one is substituing variable with other variable,
+    the other is switching a variable to enter and leave. These operations will not change the equivalence of linear equation.
+
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.3-5]
+  % A problem here.
+Solve the following linear program using SIMPLEX\\
+maximize:$$18x_1+12.5x_2$$\\
+subject~to:\\
+$$x_1+x_2\leq20$$
+$$x_1\leq 12$$
+$$x_2\leq16$$
+$$x_1,x_2\geq0$$
+\end{problem}
+
+\begin{solution}
+  % Solution here.
+    slack form:
+$$z = 18x_1+12.5x_2$$
+$$x_3 = 20-x_1-x_2$$
+$$x_4 = 12-x_1$$
+$$x_5 = 16-x_2$$
+first step:
+$$z = 126 - 18x_4+12.5x_2$$
+$$x_1 = 12-x_4$$
+$$x_3 = 8-x_2+x_4$$
+$$x_5 = 16-x_2$$
+The optimal objective value is 316, optimal solution $x_1 = 12$, $x_2 = 8$.
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29.4-2]
+  % A problem here.
+Suppose that we have a linear program that is not in standard form. We could
+produce the dual by first converting it to standard form, and then taking the dual.
+It would be more convenient, however, to be able to produce the dual directly.
+Explain how we can directly take the dual of an arbitrary linear program.
+\end{problem}
+
+\begin{solution}
+If the program is a maximization, rewrite it in a minimization form, rewrite all constraints in less-than-or-equal form.\\
+Denote an non-negative variable in inequalities or unrestricted variable in equalities as $y_i$.\\
+For constraint, demilate it and add $y_i(\sum a_{ij}x_{j}-b_{i})$ to objective value.\\
+According to $x_i$, rewrite these constraints.\\
+If we rewrite the linear program firstly, then we rewrite the linear the result in minimization form.\\
+Then we can directly take the dual of an arbitrary linear program.
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 29-1]
+  % A problem here.
+Given a set of $m$ linear inequalities on $n$ variables $x_1，x_2,.....x_n$ the linear-inequality feasibility problem asks whether there is a setting of the variables that simultaneously satisfies each of the inequalities.
+\begin{enumerate}[(a)]
+	\item Show that if we have an algorithm for linear programming, we can use it to
+	solve a linear-inequality feasibility problem. The number of variables and constraints
+	that you use in the linear-programming problem should be polynomial
+	in $n$ and $m$.
+	\item Show that if we have an algorithm for the linear-inequality feasibility problem,
+	we can use it to solve a linear-programming problem. The number of variables
+	and linear inequalities that you use in the linear-inequality feasibility problem
+	should be polynomial in $n$ and $m$, the number of variables and constraints in
+	the linear program.
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item Because we have algorithm SIMPLEX, so we can make the objective function to 0 and then run it, if we get the solution then we only use $m$constraints,
+        if we can't get the solution then the linear program doesn't have $n$ variables.
+    \item Firstly we find the duality, and then use the algorithm we will have two objective values, and we also get a feasible solution of dual problem and the original problem, so we get then optimal solution
+        which uses just $n$ variables and $m$ linear inequalities.
+\end{enumerate}
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 22.5-7]
+%   % A problem here.
+% \end{problem}
+%
+% \begin{solution}
+%
+% \end{solution}
+
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\begincorrection	% begin the ``correction'' part (Optional)
+
+% %%%%%%%%%%
+% \begin{problem}[题号]
+%   题目。
+% \end{problem}
+
+% \begin{cause}
+%   简述错误原因（可选）。
+% \end{cause}
+
+% % Or use the ``solution'' environment
+% \begin{revision}
+%   正确解答。
+% \end{revision}
+% %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\beginfb	% begin the feedback section (Optional)
+
+% 你可以写：
+% \begin{itemize}
+%   \item 对课程及教师的建议与意见
+%   \item 教材中不理解的内容
+%   \item 希望深入了解的内容
+%   \item 等
+% \end{itemize}
+% %%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+% 可使用如下命令插入图片：
+% \begin{figure}[!H]
+% \centering
+% \includegraphics[scale=0.6]{1.png}
+% % \caption{this is a figure demo}
+% \label{fig:label}
+% \end{figure}
+
+% 插入数学公式：
+% \begin{verbatim}
+%   $E = mc^2$
+% \end{verbatim}
+% 得到 $E = mc^2$。
+% \begin{verbatim}
+%   \[
+%     E = mc^2
+%   \]
+% \end{verbatim}
+% 得到
+% \[
+%   E = mc^2
+% \]
+
+% The ``remark'' environments (when needed) must be 
+% put before the ``solution''/``revision''/``proof'' environments.
+% \begin{remark}	% Optional
+%   以下解答参考了书籍/网站/讲义 $\ldots$。
+
+%   \noindent 以下解答是与 XXX 同学讨论得到的。
+% \end{remark}
+
+% \newpage  % continue in a new page
+% 可使用如下代码插入伪代码
+% \begin{algorithm}
+% \caption{DFS(G)}
+% \label{alg1}
+% \begin{algorithmic}
+%     \STATE $time \gets time + 1$
+%     \STATE $u.d\gets time$
+%     \STATE $u.color \gets GRAY$
+%     \STATE $push(u)$
+%     \WHILE{$!empty(stack)$}
+%     \STATE $u \gets top()$
+%     \STATE $leaf \gets true$
+%     \FOR{ each $v\in Adj[u]$ }
+%     \IF{$v.color \gets WHITE$}
+%     \STATE $v.color \gets GRAY$
+%     \STATE $v.\pi \gets u$
+%     \STATE $time \gets time + 1$
+%     \STATE $v.d \gets time$
+%     \STATE $push(v)$
+%     \STATE $leaf \gets false$
+%     \STATE $break$
+%     \ENDIF
+%     \ENDFOR
+%     \IF{$leaf == true$}
+%     \STATE $u.color \gets BLACK$
+%     \STATE $time \gets time + 1$
+%     \STATE $u.f \gets time$
+%     \STATE $pop(u)$
+%     \ENDIF
+%     \ENDWHILE
+% \end{algorithmic}
+% \end{algorithm}
+

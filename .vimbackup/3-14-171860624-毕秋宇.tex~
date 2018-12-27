@@ -1,0 +1,657 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% File: hw.tex 						   %
+% Description: LaTeX template for homework.                %
+%
+% Feel free to modify it (mainly the 'preamble' file).     %
+% Contact hfwei@nju.edu.cn (Hengfeng Wei) for suggestions. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IMPORTANT NOTE: Compile this file using 'XeLaTeX' (not 'PDFLaTeX') %
+%
+% If you are using TeXLive 2016 on windows,                          %
+% you may need to check the following post:                          %
+% https://tex.stackexchange.com/q/325278/23098                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt, a4paper, UTF8]{ctexart}
+\input{preamble}  % modify this file if necessary
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumerate}
+%Tikz画图
+\usepackage{tikz}
+\usetikzlibrary{arrows,graphs} %指明是图库
+\lstset{
+    columns=fixed,       
+    numbers=left,                                        % 在左侧显示行号
+    numberstyle=\tiny\color{gray},                       % 设定行号格式
+    frame=none,                                          % 不显示背景边框
+    backgroundcolor=\color[RGB]{245,245,244},            % 设定背景颜色
+    keywordstyle=\color[RGB]{40,40,255},                 % 设定关键字颜色
+    numberstyle=\footnotesize\color{darkgray},           
+    commentstyle=\it\color[RGB]{0,96,96},                % 设置代码注释的格式
+    stringstyle=\rmfamily\slshape\color[RGB]{128,0,0},   % 设置字符串格式
+    showstringspaces=false,                              % 不显示字符串中的空格
+    language=c++,                                        % 设置语言
+}  
+\lstset{breaklines}
+%%%%%%%%%%%%%%%%%%%%
+\title{3-14：矩阵计算}
+\me{毕秋宇}{171860624}
+\date{\today}     % you can specify a date like ``2017年9月30日''.
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism	% always keep this
+%%%%%%%%%%%%%%%%%%%%
+\beginthishw	% begin ``this homework (hw)'' part
+
+%%%%%%%%%%
+\begin{problem}[TC: 28.1-2]	
+Find an LU decomposition of the matrix\\
+\[
+\left(
+\begin{array}{ccc}
+4 & -5 & 6\\
+8 & -6 & 7\\
+12 & -7 & 12\\
+\end{array}
+\right)
+\]
+\end{problem}
+
+\begin{solution}
+LU分解为\\
+\[
+\left(
+\begin{array}{ccc}
+1 & 0 & 0\\
+2 & 1 & 0\\
+3 & 2 & 1\\
+\end{array}
+\right)
+\left(
+\begin{array}{ccc}
+4 & -5 & 6\\
+0 & 4 & -5\\
+0 & 0 & 4\\
+\end{array}
+\right)
+\]
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 28.1-3]
+  % A problem here.
+Solve the equation\\
+\[
+\left(
+\begin{array}{ccc}
+1 & 5 & 4\\
+2 & 0 & 3\\
+5 & 8 & 2\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+x_1 \\
+x_2 \\
+x_3 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+12 \\
+9 \\
+5 \\
+\end{array}
+\right)
+\]
+by using an LUP decomposition.
+\end{problem}
+
+\begin{solution}
+进行LU分解之后\\
+\[
+L=
+\left(
+\begin{array}{ccc}
+1 & 0 & 0\\
+2 & 1 & 0\\
+5 & 1.7 & 1\\
+\end{array}
+\right)
+\]
+\[
+U=
+\left(
+\begin{array}{ccc}
+1 & 5 & 4\\
+0 & -10 & -5\\
+0 & 0 & -9.5\\
+\end{array}
+\right)
+\]
+\[
+\left(
+\begin{array}{ccc}
+1 & 0 & 0\\
+2 & 1 & 0\\
+5 & 1.7 & 1\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+y_1 \\
+y_2 \\
+y_3 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+12 \\
+9 \\
+5 \\
+\end{array}
+\right)
+\]
+\[
+\left(
+\begin{array}{c}
+y_1\\
+y_2\\
+y_3\\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+12\\
+-15\\
+-29.5\\
+\end{array}
+\right)
+\]
+\[
+\left(
+\begin{array}{ccc}
+1 & 5 & 4\\
+0 & -10 & -5\\
+0 & 0 & -9.5\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+x_1 \\
+x_2 \\
+x_3 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+12 \\
+-15 \\
+-29.5 \\
+\end{array}
+\right)
+\]
+解该方程得
+\[
+\left(
+\begin{array}{c}
+x_1\\
+x_2\\
+x_3\\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+-\frac{3}{19}\\
+-\frac{1}{19}\\
+\frac{59}{19}\\
+\end{array}
+\right)
+\]
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 28.1-6]
+Show that for all $n \geq 1$, there exists a singular $n \times n$ matrix that has an LU decomposition.
+\end{problem}
+
+\begin{proof}
+奇异矩阵0矩阵，可以被分解成任意的上三角矩阵$U$和下三角矩阵$L$为0矩阵，所以对于任意$n\geq 1$，存在LU分解。
+\end{proof}
+
+  % 假设这是一道需要证明的题目。
+% \begin{remark}	
+%   Refer to book.
+% \end{remark}
+
+% \begin{proof}
+%   证明略。	
+% \end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 28.1-7]
+  % A problem here.
+In $\textsc{Lu-Decomposition}$, is it necessary to perform the outermost $\textbf{for}$ loop iteration when $k = n$? How about in $\textsc{Lup-Decomposition}$?
+\end{problem}
+
+\begin{solution}
+    对于$\textsc{Lu-Decomposition}$当$k=n$时最外层$\textbf{for}$循环是有必要的，因为$u_{nn}$可能为0，而矩阵的$LU$分解必须保证$L$和$U$的特征值都是正数。
+    如果$k=n$时不进行循环，那么$LU$分解得到的$U$矩阵的特征值为0，违背定义；\\
+    对于$\textsc{Lup-Decomposition}$当$k=n$时最外层$\textbf{for}$循环可以省略，因为当$k=n$时最外层的$\textbf{for}$循环不会改变最终的答案，$P$会使得$A$形成一种排列使得主元不为0。
+\end{solution}
+%%%%%%%%%%
+% \newpage
+%%%%%%%%%%
+\begin{problem}[TC: 28.2-1]
+  % A problem here.
+    Let $M(n)$ be the time to multiply two $n \times n$ matrices, and let $S(n)$ denote the time required to square an $n \times n$ matrix.
+    Show that multiplying and squaring matrices have essentially the same difficulty:
+    an $M(n)$-time matrix-multiplication algorithm implies an $O(M(n))$-time squaring algorithm,
+    and an $S(n)$-time squaring algorithm implies an $O(S(n))$-time matrix-multiplication algorithm.
+\end{problem}
+
+\begin{proof}
+    根据矩阵平方的定义，$(A_{n\times n})^{2}=A_{n\times n}\times A_{n\times n}$，所用时间$S(n)=M(n)$，
+    所以$O(S(n)) = O(M(n))$。即矩阵乘积与矩阵平方实质上难度相同。
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 28.2-2]
+    Let $M(n)$ be the time to multiply two $n \times n$ matrices,
+    and let $L(n)$ be the time to compute the LUP decomposition of an $n \times n$ matrix.
+    Show that multiplying matrices and computing LUP decompositions of matrices have essentially the same dificulty: 
+    an $M(n)$-time matrix-multiplication algorithm implies an $O(M(n))$-time LUP-decomposition algorithm,
+    and an $L(n)$-time LUP-decomposition algorithm implies an $O(L(n))$-time matrix-multiplication algorithm.
+\end{problem}
+
+\begin{proof}
+  % Solution here.、
+根据$\textsc{Lup-Decomposition}(A)$的伪代码，LUP分解所用的时间$L(n)=n^{3}$；\\
+    而$A\times B = C$矩阵相乘后矩阵$C$中的元素$c_{ij}=\sum_{k=1}^{n}a_{ik}b_{kj}$，矩阵$C$的大小为$n\times n$，所以矩阵相乘所用的时间$M(n)=n\times n^2=n^3=L(n)$。\\
+    即矩阵乘积运算与计算矩阵LUP分解实质上难度相同。
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 28.2-3]
+    Let $M(n)$ be the time to multiply two $n \times n$ matrices, and let $D(n)$ denote the time required to ﬁnd the determinant of an $n \times n$ matrix.
+    Show that multiplying matrices and computing the determinant have essentially the same difficulty:
+    an $M(n)$-time matrix-multiplication algorithm implies an $O((M(n))$-time determinant algorithm,
+    and a $D(n)$-time determinant algorithm implies an $O(D(n))$-time matrix-multiplication algorithm.
+\end{problem}
+
+\begin{proof}
+    行列式的公式为$\sum_{j_{1}j_{2}\cdots j_{n}}(-1)^{\tau(j_{1}j_{2}\cdots j_{n})}a_{1j_{1}}a_{2j_{2}}\cdots a_{nj_{n}}$，获得全排列的时间复杂度为$O(n^{2})$，
+    求逆序对的时间复杂度为$O(nlgn)$，计算$a_{1j_{1}}a_{2j_{2}}\cdots a_{nj_{n}}$的时间复杂度为$O(n)$，所以$D(n)=n^{3}=M(n)$成立。\\
+    即矩阵乘积运算与求行列式值实质上难度相同。
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 28.3-1]
+  % A problem here.
+    Prove that every diagonal element of a symmetric positive-definite matrix is positive.
+\end{problem}
+
+\begin{proof}
+    假设对称正定矩阵$A$的第$i$的对角元素$a_{ii}\leq 0$，那么有$X=[0\ 0 \cdots 1\cdots 0\ 0]^{T}$。
+    使得$X^{T}AX=a_{ii}\leq 0$，不符合正定矩阵的定义，矛盾。\\
+    所以对称正定矩阵的每一个对角元素均大于0。
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 28.3-3]
+  % A problem here.
+    Prove that the maximum element in a symmetric positive-definite matrix lies on the diagonal.
+\end{problem}
+
+\begin{proof}
+    假设对称正定矩阵最大的元素不为对角元素，不失一般性设其为$a_{ij}$，那么$\exists X=[c_{i}-c{j}]$，$c_{i}$表示$A$的第$i$列。
+    那么$X^{T}AX=(c_{i}-c_{j})^{T}A(c_{i}-c_{j})=c_{i}c_{i}-c_{i}c_{j}-c_{j}c_{i}+c_{j}c_{j}=a_{ii}-2a_{ij}+a_{jj}$，由于$a_{ij}$为最大元素，
+    所以$X^{T}AX\leq 0$，与正定矩阵定义矛盾。\\
+    所以对称正定矩阵的最大元素在对角线上。
+\end{proof}
+%%%%%%%%%%
+
+%%%%%%%%%%
+\begin{problem}[TC: 28-1]
+  % A problem here.
+$\textbf{Tridiagonal systems of linear equations}$\\
+Consider the tridiagonal matrix\\
+\[
+A=
+\left(
+\begin{array}{ccccc}
+    1 & -1 & 0 & 0 & 0 \\
+    -1 & 2 & -1 & 0 & 0 \\
+    0 & -1 & 2 & -1 & 0 \\
+    0 & 0 & -1 & 2 & -1 \\
+    0 & 0 & 0 & -1 & 2 \\
+\end{array}
+\right)
+\]
+\begin{enumerate}[$a$.]
+    \item Find an LU decomposition of $A$.
+    \item Solve the equation $Ax = (1\ 1\ 1\ 1\ 1)^{T}$ by using forward and back substitution.
+    \item Find the inverse of $A$.
+    \item Show how, for any $n \times n$ symmetric positive-definite,
+        tridiagonal matrix $A$ and any $n$-vector $b$, to solve the equation $Ax = b $ in $O(n)$ time by performing an LU decomposition.
+        Argue that any method based on forming $A^{-1}$ is asymptotically more expensive in the worst case.
+    \item Show how, for any $n \times n$ nonsingular, tridiagonal matrix $A$ and any $n$-vector $b$,
+        to solve the equation $Ax = b$ in $O(n)$ time by performing an LUP decomposition.
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+\begin{enumerate}[$a$.]
+    \item $A$的LU分解为
+\[
+L=
+\left(
+\begin{array}{ccccc}
+    1 & 0 & 0 & 0 & 0 \\
+    -1 & 1 & 0 & 0 & 0 \\
+    0 & -1 & 1 & 0 & 0 \\
+    0 & 0 & -1 & 1 & 0 \\
+    0 & 0 & 0 & -1 & 1 \\
+\end{array}
+\right)
+\]
+\[
+U=
+\left(
+\begin{array}{ccccc}
+    1 & -1 & 0 & 0 & 0 \\
+    0 & 1 & -1 & 0 & 0 \\
+    0 & 0 & 1 & -1 & 0 \\
+    0 & 0 & 0 & 1 & -1 \\
+    0 & 0 & 0 & 0 & 1 \\
+\end{array}
+\right)
+\]
+    \item
+\[
+\left(
+\begin{array}{ccccc}
+    1 & 0 & 0 & 0 & 0 \\
+    -1 & 1 & 0 & 0 & 0 \\
+    0 & -1 & 1 & 0 & 0 \\
+    0 & 0 & -1 & 1 & 0 \\
+    0 & 0 & 0 & -1 & 1 \\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+y_1 \\
+y_2 \\
+y_3 \\
+y_4 \\
+y_5 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+1 \\
+1 \\
+1 \\
+1 \\
+1 \\
+\end{array}
+\right)
+\]
+\[
+\left(
+\begin{array}{c}
+y_1\\
+y_2\\
+y_3\\
+y_4\\
+y_5\\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+1\\
+2\\
+3\\
+4\\
+5\\
+\end{array}
+\right)
+\]
+\[
+\left(
+\begin{array}{ccccc}
+    1 & -1 & 0 & 0 & 0 \\
+    0 & 1 & -1 & 0 & 0 \\
+    0 & 0 & 1 & -1 & 0 \\
+    0 & 0 & 0 & 1 & -1 \\
+    0 & 0 & 0 & 0 & 1 \\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+x_1 \\
+x_2 \\
+x_3 \\
+x_4 \\
+x_5 \\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+1 \\
+2 \\
+3 \\
+4 \\
+5 \\
+\end{array}
+\right)
+\]
+解该方程得
+\[
+\left(
+\begin{array}{c}
+x_1\\
+x_2\\
+x_3\\
+x_4\\
+x_5\\
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+15\\
+14\\
+12\\
+9\\
+5\\
+\end{array}
+\right)
+\]
+    \item
+矩阵$A$的逆为
+\[
+\left(
+\begin{array}{ccccc}
+    5 & 4 & 3 & 2 & 1 \\
+    4 & 4 & 3 & 2 & 1 \\
+    3 & 3 & 3 & 2 & 1 \\
+    2 & 2 & 2 & 2 & 1 \\
+    1 & 1 & 1 & 1 & 1 \\
+\end{array}
+\right)
+\]
+    \item
+由于对称正定矩阵的最大元素在主对角线上，所以$\textsc{Lup-Decomposition}$的第7行的循环缩减为$O(1)$。\\
+由于是三对角矩阵，所以每一行非0的元素只有常数个，所以$\textsc{Lup-Decomposition}$的第14行的循环缩减为$O(1)$。\\
+同样的$a_{ik}$和$a_{ki}$也只有常数个非0元素，所以$\textsc{Lup-Decomposition}$的第16行的循环缩减为$O(1)$。\\
+所以LUP分解的时间复杂度为$O(n)$。\\
+而通常计算$A_{-1}$的方法的时间复杂度为$\Theta(n^{2})$，所以比LU分解要慢。
+    \item
+由于$A$为三对角矩阵，所以根据$(d)$中所示，其LUP分解得到的$L$和$U$中只有常数个非0元素，所以在正向替换和反向替换的时候，时间复杂度为$O(1)$，
+所以总的时间复杂度为LUP分解的时间复杂度为$O(n)$。
+\end{enumerate}
+
+\end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26.3-3]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+%   % Solution here.
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26-1]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+% 
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 26-2]
+%   % A problem here.
+% \end{problem}
+% 
+% \begin{solution}
+% 
+% \end{solution}
+%%%%%%%%%%
+
+%%%%%%%%%%
+% \begin{problem}[TC: 22.5-7]
+%   % A problem here.
+% \end{problem}
+%
+% \begin{solution}
+%
+% \end{solution}
+
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\begincorrection	% begin the ``correction'' part (Optional)
+
+% %%%%%%%%%%
+% \begin{problem}[题号]
+%   题目。
+% \end{problem}
+
+% \begin{cause}
+%   简述错误原因（可选）。
+% \end{cause}
+
+% % Or use the ``solution'' environment
+% \begin{revision}
+%   正确解答。
+% \end{revision}
+% %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\beginfb	% begin the feedback section (Optional)
+
+% 你可以写：
+% \begin{itemize}
+%   \item 对课程及教师的建议与意见
+%   \item 教材中不理解的内容
+%   \item 希望深入了解的内容
+%   \item 等
+% \end{itemize}
+% %%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+% 可使用如下命令插入图片：
+% \begin{figure}[!H]
+% \centering
+% \includegraphics[scale=0.6]{1.png}
+% % \caption{this is a figure demo}
+% \label{fig:label}
+% \end{figure}
+
+% 插入数学公式：
+% \begin{verbatim}
+%   $E = mc^2$
+% \end{verbatim}
+% 得到 $E = mc^2$。
+% \begin{verbatim}
+%   \[
+%     E = mc^2
+%   \]
+% \end{verbatim}
+% 得到
+% \[
+%   E = mc^2
+% \]
+
+% The ``remark'' environments (when needed) must be 
+% put before the ``solution''/``revision''/``proof'' environments.
+% \begin{remark}	% Optional
+%   以下解答参考了书籍/网站/讲义 $\ldots$。
+
+%   \noindent 以下解答是与 XXX 同学讨论得到的。
+% \end{remark}
+
+% \newpage  % continue in a new page
+% 可使用如下代码插入伪代码
+% \begin{algorithm}
+% \caption{DFS(G)}
+% \label{alg1}
+% \begin{algorithmic}
+%     \STATE $time \gets time + 1$
+%     \STATE $u.d\gets time$
+%     \STATE $u.color \gets GRAY$
+%     \STATE $push(u)$
+%     \WHILE{$!empty(stack)$}
+%     \STATE $u \gets top()$
+%     \STATE $leaf \gets true$
+%     \FOR{ each $v\in Adj[u]$ }
+%     \IF{$v.color \gets WHITE$}
+%     \STATE $v.color \gets GRAY$
+%     \STATE $v.\pi \gets u$
+%     \STATE $time \gets time + 1$
+%     \STATE $v.d \gets time$
+%     \STATE $push(v)$
+%     \STATE $leaf \gets false$
+%     \STATE $break$
+%     \ENDIF
+%     \ENDFOR
+%     \IF{$leaf == true$}
+%     \STATE $u.color \gets BLACK$
+%     \STATE $time \gets time + 1$
+%     \STATE $u.f \gets time$
+%     \STATE $pop(u)$
+%     \ENDIF
+%     \ENDWHILE
+% \end{algorithmic}
+% \end{algorithm}
+

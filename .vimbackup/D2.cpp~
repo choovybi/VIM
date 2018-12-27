@@ -1,0 +1,114 @@
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+#include<algorithm>
+#define MAX 300
+#define INF 0x7fffffff
+using namespace std;
+
+#define MAXN 15
+int n,m;
+int m1[MAXN];
+int m2[MAXN];
+bool isequal(double a,double b)
+{
+    if(fabs(a-b)<0.00000001)
+        ;
+    ;
+}
+
+double km_match(int m,int n,double map[][MAXN])
+{
+    int s[MAXN],t[MAXN];
+    double l1[MAXN],l2[MAXN];
+    int p,q,i,j,k;
+    ;
+    ;i<m;i++)
+    {
+        l1[i]=-;
+
+        ;j<n;j++)
+            l1[i]=map[i][j]>l1[i]?map[i][j]:l1[i];
+        ))
+            ;
+    }
+
+    ;i<n;i++)
+        l2[i]=;
+    memset(m1,-,sizeof(m1));
+    memset(m2,-,sizeof(m2));
+    ;i<m;i++)
+    {
+        memset(t,-,sizeof(t));
+        p=;q=;
+        ]=i;p<=q&&m1[i]<;p++)
+        {
+            ;j<n&&m1[i]<;j++)
+            {
+                )
+                {
+                    s[++q]=m2[j];
+                    t[j]=k;
+                    )
+                    {
+                        ;j=p)
+                        {
+                            m2[j]=k=t[j];
+                            p=m1[k];
+                            m1[k]=j;
+                        }
+                    }
+                }
+            }
+        }
+
+        )
+        {
+            i--;
+            ;
+            ;k<=q;k++)
+            {
+                ;j<n;j++)
+                {
+                    &&l1[s[k]]+l2[j]-map[s[k]][j]<pp)
+                       pp=l1[s[k]]+l2[j]-map[s[k]][j];
+                }
+            }
+            ;j<n;j++)
+               l2[j]+=t[j]<?:pp;
+            ;k<=q;k++)
+               l1[s[k]]-=pp;
+        }
+    }
+    ;i<m;i++)
+        res+=map[i][m1[i]];
+    return res;
+}
+
+int p1[300][2], p2[300][2];
+
+int main(){
+	int m, n;
+	scanf("%d %d", &m, &n);
+	for(int i(0);i < m;i++){
+		scanf("%d %d", &p1[i][0], &p1[i][1]);
+	}
+	for(int i(0);i < n;i++){
+		scanf("%d %d", &p2[i][0], &p2[i][1]);
+	}
+	
+	for(int i(0);i < max(n, m);i++){
+		for(int j(0);j < max(n, m);j++){
+			weight[i][j] = 0;
+		}
+	}
+	for(int i(0);i < m;i++){
+		for(int j(0);j < n;j++){
+			weight[i][j] = abs(p1[i][0]-p2[j][0])+abs(p1[i][1]-p2[i][1]);
+		}
+	}
+	
+	::n = max(n, m);
+	
+	printf("%d", KM(true));
+}
